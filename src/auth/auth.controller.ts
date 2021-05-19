@@ -1,4 +1,13 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  ConflictException,
+  Controller,
+  ForbiddenException,
+  Get,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/user.dto';
@@ -15,6 +24,23 @@ export class AuthController {
 
   @Post('/signup')
   async signup(@Body() user: CreateUserDto) {
-    return this.authService.create(user);
+    try {
+      const created = await this.authService.create(user);
+      return created;
+    } catch (err) {
+      throw new ForbiddenException(
+        'Could not sign up, username already exists - ' + err.message,
+      );
+    }
+  }
+
+  @UseGuards(AuthGuard('google'))
+  @Get('/google')
+  async googleAuth(@Req() req) {}
+
+  @UseGuards(AuthGuard('google'))
+  @Get('/google/redirect')
+  async googleAuthRedirect(@Req() req) {
+    return this.authService.googleLogin(req.user);
   }
 }

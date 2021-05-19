@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './schema/users.schema';
 import { Model } from 'mongoose';
@@ -26,5 +26,26 @@ export class AuthService {
   async login(user) {
     const payload = { username: user.username, sub: user._id };
     return { access_token: this.jwtService.sign(payload) };
+  }
+
+  async googleLogin(user) {
+    if (user.email && user.firstname && user.lastname) {
+      const toFindOrCreate = {
+        username: user.firstname + ' ' + user.lastname,
+        email: user.email,
+      };
+      const find = await this.UserModel.findOne(toFindOrCreate);
+      console.log(find);
+      if (find) return this.login(find);
+      else {
+        const create = await this.UserModel.create(toFindOrCreate);
+        return this.login(create);
+      }
+    } else {
+      throw new HttpException(
+        'Could not sign in with Google',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
   }
 }
