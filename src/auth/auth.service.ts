@@ -35,7 +35,6 @@ export class AuthService {
         email: user.email,
       };
       const find = await this.UserModel.findOne(toFindOrCreate);
-      console.log(find);
       if (find) return this.login(find);
       else {
         const create = await this.UserModel.create(toFindOrCreate);
