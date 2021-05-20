@@ -1,6 +1,5 @@
 import {
   Body,
-  ConflictException,
   Controller,
   ForbiddenException,
   Get,
@@ -42,5 +41,12 @@ export class AuthController {
   @Get('/google/redirect')
   async googleAuthRedirect(@Req() req) {
     return this.authService.googleLogin(req.user);
+  }
+
+  // Unknown authentication strategy "jwt", if JwtStrategy is not in auth.controller module context
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/user')
+  getUser(@Req() req) {
+    return req.user;
   }
 }

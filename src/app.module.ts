@@ -8,6 +8,7 @@ import {
   MongooseOptionsFactory,
 } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ProductModule } from './product/product.module';
 
 @Injectable()
 class MongooseConfigService implements MongooseOptionsFactory {
@@ -28,6 +29,7 @@ class MongooseConfigService implements MongooseOptionsFactory {
     MongooseModule.forRootAsync({
       useClass: MongooseConfigService,
     }),
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],

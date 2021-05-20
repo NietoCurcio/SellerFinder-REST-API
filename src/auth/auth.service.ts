@@ -16,6 +16,10 @@ export class AuthService {
     return this.UserModel.findOne({ username });
   }
 
+  async findById(id) {
+    return this.UserModel.findById(id);
+  }
+
   async create(user) {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
