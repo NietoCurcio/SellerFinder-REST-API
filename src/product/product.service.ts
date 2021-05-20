@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ArgumentsHost, ExecutionContext, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -14,15 +14,22 @@ export class ProductService {
   ) {}
 
   create(product: CreateProductDto) {
-    console.log(product);
-    console.log(Object.getPrototypeOf(product));
     return this.productModel.create(product);
+  }
+
+  async createComment(id, comment, user) {
+    const product = await this.productModel.findById(id);
+    comment.user = user._id;
+    // should we create a Comment Document?
+    // const createComment: any = await this.commentModel.create(comment);
+    product.comments.push(comment);
+    return product.save();
   }
 
   findAll() {
     return this.productModel
       .find()
-      .populate({ path: 'comments', populate: { path: 'user' } });
+      .populate({ path: 'comments.user', model: 'User', select: 'username' });
   }
 
   findOne(id) {

@@ -1,6 +1,4 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Exclude } from 'class-transformer';
-import { IsNumber, IsString } from 'class-validator';
 import mongoose from 'mongoose';
 import { User } from 'src/auth/schema/users.schema';
 

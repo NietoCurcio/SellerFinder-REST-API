@@ -1,5 +1,4 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsString } from 'class-validator';
 import mongoose from 'mongoose';
 import { User } from 'src/auth/schema/users.schema';
 
@@ -8,13 +7,13 @@ export type CommentDocument = Comment & mongoose.Document;
 @Schema()
 export class Comment {
   @Prop()
-  @IsString()
   title: string;
 
   @Prop()
-  @IsString()
   comment: string;
 
+  // So noticed that, Product has Comment subdocuments and Comment has user ObjectId reference
+  // Product -> (subdocuments) Comment -> (ObjectId ref) User
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user: User;
 }

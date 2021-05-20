@@ -1,6 +1,4 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Exclude } from 'class-transformer';
-import { IsEmail, IsString } from 'class-validator';
 import mongoose from 'mongoose';
 
 export type UserDocument = User & mongoose.Document;

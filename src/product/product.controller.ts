@@ -6,10 +6,13 @@ import {
   Put,
   Param,
   Delete,
+  Req,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { CreateCommentDto } from './dto/create-comment.dto';
+import { UpdateCommentDto } from './dto/update-comment.dto';
 import { Auth } from 'src/auth/roles/auth.decorator';
 import { ParamValidation } from './dto/param.validation';
 
@@ -23,6 +26,15 @@ export class ProductController {
     return this.productService.create(createProductDto);
   }
 
+  @Post('/:id/comments')
+  createComment(
+    @Param() params: ParamValidation,
+    @Body() comment: CreateCommentDto,
+    @Req() req,
+  ) {
+    return this.productService.createComment(params.id, comment, req.user);
+  }
+
   @Get()
   findAll() {
     return this.productService.findAll();
@@ -30,7 +42,6 @@ export class ProductController {
 
   @Get(':id')
   findOne(@Param() params: ParamValidation) {
-    console.log(params);
     return this.productService.findOne(params.id);
   }
 
