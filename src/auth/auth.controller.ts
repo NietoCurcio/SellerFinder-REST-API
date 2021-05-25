@@ -10,6 +10,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/user.dto';
+import { JwtAuthGuard } from './guards/auth.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -43,8 +44,8 @@ export class AuthController {
     return this.authService.googleLogin(req.user);
   }
 
-  // Unknown authentication strategy "jwt", if JwtStrategy is not in auth.controller module context
-  @UseGuards(AuthGuard('jwt'))
+  // "Unknown authentication strategy "jwt"", if JwtStrategy is not in auth.controller module context
+  @UseGuards(JwtAuthGuard)
   @Get('/user')
   getUser(@Req() req) {
     return req.user;

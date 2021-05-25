@@ -1,7 +1,6 @@
 import { ArgumentsHost, ExecutionContext, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
 import { Product, ProductDocument } from './schema/product.schema';
 import { Model } from 'mongoose';
 import { Comment, CommentDocument } from './schema/comment.schema';
@@ -13,7 +12,8 @@ export class ProductService {
     @InjectModel(Comment.name) private commentModel: Model<CommentDocument>,
   ) {}
 
-  create(product: CreateProductDto) {
+  create(product: CreateProductDto, user) {
+    product.user = user._id;
     return this.productModel.create(product);
   }
 
@@ -33,11 +33,19 @@ export class ProductService {
   }
 
   findOne(id) {
-    return `This action returns a #${id} product`;
+    return this.productModel.findById(id);
   }
 
-  update(id, product: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id, product, user) {
+    const productDoc = await this.productModel.findById(id);
+    if (!user._id.equals(productDoc.user)) {
+      throw new Error('Action not allowed');
+    }
+    // does not create a new object, let newObject = {...target, source} === Object.assign({}, target, source)
+    // so notice to simulate the spread operator,
+    // in order to create a new object, we would pass an empty object {}
+    Object.assign(productDoc, product);
+    return productDoc.save();
   }
 
   remove(id) {
