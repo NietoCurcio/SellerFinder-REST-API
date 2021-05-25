@@ -13,8 +13,9 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
-import { Auth } from 'src/auth/roles/auth.decorator';
+import { Auth } from 'src/auth/roles_decorator/auth.decorator';
 import { ParamValidation } from './dto/param.validation';
+import { Public } from 'src/auth/roles_decorator/public.decorator';
 
 @Auth('user')
 @Controller('products')
@@ -35,11 +36,13 @@ export class ProductController {
     return this.productService.createComment(params.id, comment, req.user);
   }
 
+  @Public()
   @Get()
   findAll() {
     return this.productService.findAll();
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param() params: ParamValidation) {
     return this.productService.findOne(params.id);
