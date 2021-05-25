@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { User } from 'src/auth/schema/users.schema';
+import { Comment } from './comment.schema';
 
 export type ProductDocument = Product & mongoose.Document;
 
@@ -25,8 +26,8 @@ export class Product {
   user: User;
 
   // Subdocuments
-  @Prop()
-  comments: [Comment];
+  @Prop([Comment])
+  comments: Comment[];
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

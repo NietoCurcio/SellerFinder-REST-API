@@ -18,6 +18,7 @@ import { Auth } from 'src/auth/guards/auth.decorator';
 import { ParamValidation } from './dto/param.validation';
 import { Public } from 'src/auth/guards/public.decorator';
 import { User } from '../auth/guards/user.decorator';
+import { CommentParamValidation } from './dto/param.comment.validation';
 
 @Auth('user')
 @Controller('products')
@@ -36,6 +37,34 @@ export class ProductController {
     @User() user,
   ) {
     return this.productService.createComment(params.id, comment, user);
+  }
+
+  @Put('/:id/comments/:commentId')
+  updateComment(
+    @Param() params: CommentParamValidation,
+    @Body() comment: UpdateCommentDto,
+    @User() user,
+  ) {
+    return this.productService.updateComment(
+      params.id,
+      params.commentId,
+      comment,
+      user,
+    );
+  }
+
+  @Delete('/:id/comments/:commentId')
+  async deleteComment(@Param() params: CommentParamValidation, @User() user) {
+    try {
+      const remove = await this.productService.deleteComment(
+        params.id,
+        params.commentId,
+        user,
+      );
+      return remove;
+    } catch (err) {
+      throw new ForbiddenException(err.message);
+    }
   }
 
   @Public()
@@ -69,7 +98,12 @@ export class ProductController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productService.remove(+id);
+  async remove(@Param() params: ParamValidation, @User() user) {
+    try {
+      const removed = await this.productService.remove(params.id, user);
+      return removed;
+    } catch (err) {
+      throw new ForbiddenException(err.message);
+    }
   }
 }
