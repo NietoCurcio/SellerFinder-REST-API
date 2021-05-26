@@ -1,3 +1,41 @@
+# SellerFinder REST API
+
+<img src=".github/sellerFinder.png" alt="SellerFinder REST API" width="80%">
+
+Server project to conclude Server-side Development with NodeJS, Express and MongoDB on Coursera - Honors content, Project Implementation and Final Report.
+
+## User Authentication
+
+<img src=".github/googleoauth.png" alt="SellerFinder Google OAuth Authentication" width="60%">
+
+The server uses JWT token based authentication, since it allows stateless server side authentication. Once the user is logged in, an access token in send to the client so that future requests _Bear_ the token, either registering and signing in through local strategy or logging in using **Google OAuth** service.
+
+> The authentication is made through Passport library, that performs Local, JWT and Google stratregies.
+
+## Resources & data model
+
+Products:
+
+- Authenticated users are able to create, read, update and delete Products and Comments in a product.
+- These actions follows business rules like only the user that is the owner of the product, is able to modify it.
+- Role-based access control, only admin users can delete all the Comments in a Product.
+
+**Data Model:**
+
+<img src=".github/googleoauth.png" alt="SellerFinder Google OAuth Authentication" width="60%">
+
+## NestJs & ExpressJs
+
+NestJs is a Node.js framework for building server-side applications, it is built on top of Express. The lessons on the course teaches a lot of things about Express like Middlewares, Authentication, Authorization and so on. I've made use of Nest because I just wanted to learn a little on how to use NestJs. I've described some informations about this framework [in this repository example.](https://github.com/NietoCurcio/Nestjs-REST-API-Example) and an overview of what is shown in the Server-side Development with NodeJS course in the [Confusion server project in the course](https://github.com/NietoCurcio/Confusion-REST-API-Server).
+
+## Requirements
+
+- NodeJs.
+- MongoDB local service or Atlas cloud database service.
+- Google OAuth project registration.
+
+<hr>
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>
@@ -71,8 +109,3 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
-
-- User authentication
-- Local
-- JWT
-- **Google Oauth**

@@ -1,0 +1,23 @@
+body {
+  font-family: sans-serif;
+  background-color: #383e8c;
+  color: #fff;
+}
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+#routes {
+  display: flex;
+  justify-content: space-around;
+  background-color: #1a1c40;
+  padding: 2rem;
+  border-radius: 20px;
+  font-size: 18px;
+  line-height: 2.5rem;
+  letter-spacing: 1.5px;
+}
+
+#routes h2 {
+  border-bottom: 1px solid #fff;
+}

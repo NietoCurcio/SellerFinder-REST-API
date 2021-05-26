@@ -4,9 +4,28 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style/style.css" />
     <title>SellerFinder</title>
   </head>
   <body>
-    Welcome to SellerFinder REST API Server
+    <div class="container">
+      <h1>Welcome to SellerFinder REST API Server</h1>
+      <div id="routes">
+        <div id="route">
+          <h2>Authentication</h2>
+          <h3>/auth/login</h3>
+          <h3>/auth/signup</h3>
+          <h3>/auth/google</h3>
+          <h3>/auth/user</h3>
+        </div>
+        <div id="route">
+          <h2>Products & Comments</h2>
+          <h3>/products</h3>
+          <h3>/products/:id</h3>
+          <h3>/products/:id/comments</h3>
+          <h3>/products/:id/comments/:commentId</h3>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
