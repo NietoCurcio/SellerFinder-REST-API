@@ -6,8 +6,11 @@ import {
   Put,
   Param,
   Delete,
-  Req,
   ForbiddenException,
+  UseInterceptors,
+  UploadedFile,
+  ClassSerializerInterceptor,
+  UsePipes,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -19,6 +22,10 @@ import { ParamValidation } from './dto/param.validation';
 import { Public } from 'src/auth/guards/public.decorator';
 import { User } from '../auth/guards/user.decorator';
 import { CommentParamValidation } from './dto/param.comment.validation';
+import { diskStorage } from 'multer';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { join } from 'path';
+import { ParseBodyPipe } from './dto/parseBody.pipe';
 
 @Auth('user')
 @Controller('products')
@@ -26,7 +33,33 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
-  create(@Body() createProductDto: CreateProductDto, @User() user) {
+  // @UsePipes(new ParseBodyPipe())
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: (req, file, cb) =>
+          cb(null, join(__dirname, '..', '..', 'public', 'images')),
+        filename: (req, file, cb) => {
+          cb(
+            null,
+            file.fieldname +
+              '-' +
+              Date.now() +
+              '-' +
+              Math.round(Math.random() * 1e9) +
+              '-' +
+              file.originalname,
+          );
+        },
+      }),
+    }),
+  )
+  create(
+    @Body(new ParseBodyPipe()) createProductDto: CreateProductDto,
+    @User() user,
+    @UploadedFile() file,
+  ) {
+    if (file) createProductDto.image = file.filename;
     return this.productService.create(createProductDto, user);
   }
 

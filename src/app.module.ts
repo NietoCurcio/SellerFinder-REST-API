@@ -9,6 +9,8 @@ import {
 } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProductModule } from './product/product.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Injectable()
 class MongooseConfigService implements MongooseOptionsFactory {
@@ -30,6 +32,7 @@ class MongooseConfigService implements MongooseOptionsFactory {
       useClass: MongooseConfigService,
     }),
     ProductModule,
+    ServeStaticModule.forRoot({ rootPath: join(__dirname, '..', 'public') }),
   ],
   controllers: [AppController],
   providers: [AppService],

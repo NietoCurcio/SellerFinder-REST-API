@@ -48,6 +48,7 @@
     "@nestjs/testing": "^7.6.15",
     "@types/express": "^4.17.11",
     "@types/jest": "^26.0.22",
+    "@types/multer": "^1.4.5",
     "@types/node": "^14.14.36",
     "@types/passport-google-oauth": "^1.0.41",
     "@types/passport-jwt": "^3.0.5",

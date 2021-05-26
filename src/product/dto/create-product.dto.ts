@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer';
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { ObjectId } from 'mongoose';
 
 export class CreateProductDto {
@@ -14,7 +14,7 @@ export class CreateProductDto {
   @IsString()
   description: string;
 
-  @IsNumber()
+  @IsString()
   price: string;
 
   @Exclude({ toPlainOnly: true })
