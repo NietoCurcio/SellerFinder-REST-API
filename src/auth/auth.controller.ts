@@ -28,9 +28,7 @@ export class AuthController {
       const created = await this.authService.create(user);
       return created;
     } catch (err) {
-      throw new ForbiddenException(
-        'Could not sign up, username already exists - ' + err.message,
-      );
+      throw new ForbiddenException('Could not sign up - ' + err.message);
     }
   }
 

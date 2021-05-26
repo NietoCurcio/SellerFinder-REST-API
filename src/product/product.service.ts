@@ -28,6 +28,16 @@ export class ProductService {
     return product.save();
   }
 
+  async deleteAllComments(id) {
+    const prod: any = await this.productModel.findById(id);
+    let i = prod.comments.length;
+    while (i--) {
+      prod.comments[i].remove();
+      // or prod.comments.remove(comment);
+    }
+    return prod.save();
+  }
+
   async updateComment(productId, commentId, update, user) {
     const product: any = await this.productModel.findById(productId);
     const comment = product.comments.id(commentId);

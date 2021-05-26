@@ -1,4 +1,3 @@
-import { Exclude } from 'class-transformer';
 import { IsEmail, IsString } from 'class-validator';
 
 export class CreateUserDto {
@@ -9,6 +8,5 @@ export class CreateUserDto {
   email: string;
 
   @IsString()
-  @Exclude({ toPlainOnly: true })
   password: string;
 }

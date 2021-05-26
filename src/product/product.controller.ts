@@ -26,6 +26,7 @@ import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { join } from 'path';
 import { ParseBodyPipe } from './dto/parseBody.pipe';
+import { Roles } from 'src/auth/guards/role.decorator';
 
 @Auth('user')
 @Controller('products')
@@ -70,6 +71,12 @@ export class ProductController {
     @User() user,
   ) {
     return this.productService.createComment(params.id, comment, user);
+  }
+
+  @Roles('admin')
+  @Delete('/:id/comments')
+  deleteAllCommnets(@Param() params: ParamValidation) {
+    return this.productService.deleteAllComments(params.id);
   }
 
   @Put('/:id/comments/:commentId')
