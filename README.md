@@ -40,6 +40,7 @@ NestJs is a Node.js framework for building server-side applications, it is built
 - NodeJs.
 - MongoDB local service or Atlas cloud database service.
 - Google OAuth project registration.
+- Pagar.me registration.
 
 ## About Course and SellerFinder idea
 
