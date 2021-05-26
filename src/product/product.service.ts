@@ -4,18 +4,85 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { Product, ProductDocument } from './schema/product.schema';
 import { Model } from 'mongoose';
 import { Comment, CommentDocument } from './schema/comment.schema';
+import { ConfigService } from '@nestjs/config';
+import pagarme from 'pagarme';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectModel(Product.name) private productModel: Model<ProductDocument>,
     @InjectModel(Comment.name) private commentModel: Model<CommentDocument>,
+    private config: ConfigService,
   ) {}
 
   create(product: CreateProductDto, user) {
     product.user = user._id;
     return this.productModel.create(product);
   }
+
+  async buyProduct(id, user) {
+    try {
+      const product = await this.productModel.findById(id);
+      const client = await pagarme.client.connect({
+        api_key: process.env.PAGARME_APIKEY,
+      });
+      // handling cents to 'amount'
+      const price = String(product.price).split('.');
+      if (price.length == 2) {
+        if (price[1].length == 1) price[1] = price[1] + '0';
+        else if (price[1].length > 2) price[1] = price[1][0] + price[1][1];
+      } else if (price.length == 1) {
+        price[0] += '00';
+      }
+      // handling product to 'items'
+      const formattedPrice = parseInt(price.join(''));
+      const object = product.toObject();
+      const prod = (({ image, name, description, price, user, _id }) => ({
+        title: name,
+        unit_price: formattedPrice,
+        id: _id,
+        quantity: 1,
+        tangible: true,
+      }))(object);
+      const transaction = await client.transactions.create({
+        amount: formattedPrice,
+        payment_method: 'boleto',
+        capture: true,
+        postback_url: 'https://en4kobuz19m1so2.m.pipedream.net', // test url that receives events, like "paid"
+        // in a production project, this endpoint would be in our system/server,
+        // the event informations comes in the body of the request
+        customer: {
+          type: 'individual',
+          country: 'br',
+          name: user.username,
+          email: user.email,
+          documents: [
+            {
+              type: 'cpf',
+              number: '00000000000',
+            },
+          ],
+          phone_numbers: ['+55000000000'],
+          birthday: '1965-01-01',
+        },
+        items: [prod],
+      });
+      product.soldQuantity += 1;
+      // capture: true
+      // or make a request to /capture - https://docs.pagar.me/reference#capturando-uma-transacao-posteriormente
+      // there is also a way of notify a client payment slip - /collect_payment POST -d token,email
+      return {
+        product: (await product.save()).toObject(),
+        transaction: transaction,
+      };
+    } catch (error) {
+      console.log(error);
+      console.log(error.response.errors);
+      throw new Error('Error: ' + error.message);
+    }
+  }
+  // Simulate a paid:
+  // curl -X PUT https://api.pagar.me/1/transactions/:transactionId -d api_key=<api_key> -d status=paid
 
   async createComment(id, comment, user) {
     const product = await this.productModel.findById(id);

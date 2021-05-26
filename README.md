@@ -1,6 +1,6 @@
 # SellerFinder REST API
 
-<img src=".github/sellerFinder.png" alt="SellerFinder REST API" width="80%">
+<img src=".github/sellerFinder.png" alt="SellerFinder REST API"  style="margin-left: 1rem;" width="80%">
 
 Server project to conclude Server-side Development with NodeJS, Express and MongoDB on Coursera - Honors content, Project Implementation and Final Report.
 
@@ -20,7 +20,11 @@ Products:
 - These actions follows business rules like only the user that is the owner of the product, is able to modify it.
 - Role-based access control, only admin users can delete all the Comments in a Product.
 
-**Data Model:**
+Data model:
+
+<img src=".github/datamodel.png" alt="SellerFinder Google OAuth Authentication" width="60%">
+
+datamodel
 
 <img src=".github/googleoauth.png" alt="SellerFinder Google OAuth Authentication" width="60%">
 

@@ -11,6 +11,7 @@ import {
   UploadedFile,
   ClassSerializerInterceptor,
   UsePipes,
+  BadRequestException,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -71,6 +72,30 @@ export class ProductController {
     @User() user,
   ) {
     return this.productService.createComment(params.id, comment, user);
+  }
+
+  @Post('/:id/buy')
+  async buyProduct(@Param() params: ParamValidation, @User() user) {
+    try {
+      const { product, transaction } = await this.productService.buyProduct(
+        params.id,
+        user,
+      );
+      return this.purchaseDone(product, transaction);
+    } catch (error) {
+      throw new BadRequestException(
+        'The purchase could not be done - ' + error.message,
+      );
+    }
+  }
+
+  async purchaseDone(product, transaction) {
+    const done = {
+      message: 'Purchase Done!',
+      bankSlip: transaction.boleto_url,
+      product: { ...product },
+    };
+    return done;
   }
 
   @Roles('admin')
