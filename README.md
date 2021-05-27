@@ -33,7 +33,7 @@ Data model:
 
 ## NestJs & ExpressJs
 
-NestJs is a Node.js framework for building server-side applications, it is built on top of Express. The course's classes teache a lot of things about Express, like Middlewares, Authentication, Authorization, Static Files, HTTP, HTTPS, Mongo driver and so on. I've made use of Nest because I just wanted to learn a little on how to use NestJs. I've described some information about this framework [in this repository example.](https://github.com/NietoCurcio/Nestjs-REST-API-Example) and an overview of what is shown in the Server-side Development with NodeJS course in the [Confusion server project in the course](https://github.com/NietoCurcio/Confusion-REST-API-Server).
+NestJs is a Node.js framework for building server-side applications, it is built on top of Express. The course's lessons teache a lot of things about Express, like Middlewares, Authentication, Authorization, Static Files, HTTP, HTTPS, Mongo driver and so on. I've made use of Nest because I just wanted to learn a little on how to use NestJs. I've described some information about this framework [in this repository example.](https://github.com/NietoCurcio/Nestjs-REST-API-Example) and an overview of what is shown in the Server-side Development with NodeJS course in the [Confusion server project in the course](https://github.com/NietoCurcio/Confusion-REST-API-Server).
 
 ## Requirements
 
